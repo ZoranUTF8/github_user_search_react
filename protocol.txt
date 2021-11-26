@@ -38,11 +38,24 @@ function App() {
 
   5: Context page
   wrap the app in the context
-make logic inside and than import in individual components
+  make logic inside and than import in individual components
 
 
     <GithubProvider>
       <App />
     </GithubProvider>
 
-6:
+6: Adding mock data to avoid using the api' requests
+  use static data
+  Send them in context to the app
+  <GithubContext.Provider value={{ githubUser, repos, followers }}>
+      {children}
+    </GithubContext.Provider>
+
+7:  Info page use data from context
+
+8: User page use data from context
+
+9: Followers component using data from context
+
+10: Repos component using fusion charts
