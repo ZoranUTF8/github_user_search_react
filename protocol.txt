@@ -59,3 +59,7 @@ function App() {
 9: Followers component using data from context
 
 10: Repos component using fusion charts
+  and add all charts that use the data from
+  context.
+
+11. Seach component
