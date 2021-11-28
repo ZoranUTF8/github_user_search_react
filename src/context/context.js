@@ -18,6 +18,7 @@ const GithubProvider = ({ children }) => {
   const [loading, setIsLoading] = useState(false); //? loading spinner state
   //* error
   const [error, setError] = useState({ show: false, msg: "" });
+  //* end of states
 
   //*check requests left
   const checkRequests = () => {
@@ -48,21 +49,28 @@ const GithubProvider = ({ children }) => {
   const searchUser = async (user) => {
     toggleError(); //? remove error from before
     setIsLoading(true);
-    
-    const response = await axios(`${rootUrl}/users/${user}`).catch((err) =>
-      console.log(err)
-    );
 
-    if (response) {
+    try {
+      const response = await axios(`${rootUrl}/users/${user}`);
       setGithubUser(response.data);
-      // more logic here
-    } else {
+      //? get the repos from the user
+      const { login, followers_url } = response.data;
+      axios(`${rootUrl}/users/${login}/repos?per_page=100`).then((response) =>
+        setRepos(response.data)
+      );
+      //? get users followers
+      axios(`${followers_url}?per_page=100`).then((response) =>
+        setFollowers(response.data)
+      );
+    } catch (err) {
       toggleError(true, "No user found. Check your input.");
     }
+
     checkRequests();
     setIsLoading(false);
   };
 
+  //! main return
   return (
     <GithubContext.Provider
       value={{
