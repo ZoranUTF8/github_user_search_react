@@ -9,13 +9,13 @@ const rootUrl = "https://api.github.com";
 const GithubContext = React.createContext();
 
 const GithubProvider = ({ children }) => {
-  const [githubUser, setGithubUser] = useState(mockUser);
+  const [githubUser, setGithubUser] = useState(mockUser); //? user we get from search
   const [repos, setRepos] = useState(mockRepos);
   const [followers, setFollowers] = useState(mockFollowers);
 
   //* getting user data from github api
-  const [requests, setRequests] = useState(0);
-  const [loading, setIsLoading] = useState(false);
+  const [requests, setRequests] = useState(0); //? number of requests left to use github api
+  const [loading, setIsLoading] = useState(false); //? loading spinner state
   //* error
   const [error, setError] = useState({ show: false, msg: "" });
 
@@ -46,7 +46,8 @@ const GithubProvider = ({ children }) => {
 
   //* search user
   const searchUser = async (user) => {
-    toggleError();//? remove error
+    toggleError(); //? remove error from before
+    setIsLoading(true);
     
     const response = await axios(`${rootUrl}/users/${user}`).catch((err) =>
       console.log(err)
@@ -58,11 +59,21 @@ const GithubProvider = ({ children }) => {
     } else {
       toggleError(true, "No user found. Check your input.");
     }
+    checkRequests();
+    setIsLoading(false);
   };
 
   return (
     <GithubContext.Provider
-      value={{ githubUser, repos, followers, requests, error, searchUser }}
+      value={{
+        githubUser,
+        repos,
+        followers,
+        requests,
+        error,
+        searchUser,
+        loading,
+      }}
     >
       {children}
     </GithubContext.Provider>

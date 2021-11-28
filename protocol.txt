@@ -65,5 +65,8 @@ function App() {
 11. Search component to get users from github-api
 logic inside context
 - the moment app loads we use axios to get rate limit
+- on search button pressed we send the user to the function in context
+
+12. set loading spinner when searching and loading data
 
 
