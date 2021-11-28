@@ -62,4 +62,8 @@ function App() {
   and add all charts that use the data from
   context.
 
-11. Seach component
+11. Search component to get users from github-api
+logic inside context
+- the moment app loads we use axios to get rate limit
+
+
