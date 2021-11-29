@@ -53,15 +53,27 @@ const GithubProvider = ({ children }) => {
     try {
       const response = await axios(`${rootUrl}/users/${user}`);
       setGithubUser(response.data);
+        
       //? get the repos from the user
       const { login, followers_url } = response.data;
-      axios(`${rootUrl}/users/${login}/repos?per_page=100`).then((response) =>
-        setRepos(response.data)
-      );
-      //? get users followers
-      axios(`${followers_url}?per_page=100`).then((response) =>
-        setFollowers(response.data)
-      );
+      
+      //! get user repos and followers and than pass data together, better than individualu getting 2 axios requests
+      await Promise.allSettled([
+        axios(`${rootUrl}/users/${login}/repos?per_page=100`),
+        axios(`${followers_url}?per_page=100`),
+      ]).then((result) => {
+        const promiseFulfilledStatus = "fulfilled";
+        const [repos, followers] = result;
+
+        if (repos.status === promiseFulfilledStatus) {
+          setRepos(repos.value.data);
+          console.log(repos);
+        }
+        if (followers.status === promiseFulfilledStatus) {
+          setFollowers(followers.value.data);
+        }
+      });
+
     } catch (err) {
       toggleError(true, "No user found. Check your input.");
     }
