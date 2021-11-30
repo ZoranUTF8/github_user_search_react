@@ -71,3 +71,19 @@ logic inside context
 
 13: Instal and set up the AUTHO
 
+14: First set up the navbar with the login and logut logic
+
+15: Set up page acces to dashboard for the users that are not authorised
+
+16:  Set up cash lcoation to local storage
+
+17: deployment on netlify
+In order for routing to work on netlify, redirects was added to the public folder
+
+- \_redirects file in public
+
+/*    /index.html   200
+
+18: add to package.json
+"build": "CI= react-scripts build",
+

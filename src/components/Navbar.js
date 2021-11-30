@@ -1,9 +1,40 @@
-import React from 'react';
-import styled from 'styled-components';
-import { useAuth0 } from '@auth0/auth0-react';
+import React from "react";
+import styled from "styled-components";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Navbar = () => {
-  return <Wrapper>Navbar</Wrapper>
+  //? get the required functions from AuthO
+  const { isAuthenticated, loginWithRedirect, logout, user, isLoading } =
+    useAuth0();
+
+  //? get the user data if authenticatedD
+  const isUserAuthenticated = isAuthenticated && user;
+  return (
+    <Wrapper>
+      {/* If user is logged in and picture is present, display user picture */}
+      {isUserAuthenticated && user.picture && (
+        <img src={user.picture} alt={user.name} />
+      )}
+      {/* Id authenticated and name is present get name */}
+      {isUserAuthenticated && user.name && (
+        <h4>
+          Welcome <strong>{user.name.toUpperCase()}</strong>
+        </h4>
+      )}
+      {/* check if user true and display login/logout */}
+      {user ? (
+        <button
+          onClick={() => {
+            logout({ returnTo: window.location.origin });
+          }}
+        >
+          logout
+        </button>
+      ) : (
+        <button onClick={loginWithRedirect}>Log in</button>
+      )}
+    </Wrapper>
+  );
 };
 
 const Wrapper = styled.nav`
